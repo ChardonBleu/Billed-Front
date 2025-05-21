@@ -65,3 +65,13 @@ select:focus {
 *[placeholder] {
   color: #0e5ae5 !important;
 }
+
+.file-format-error {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgb(224, 60, 38);
+  padding-top: 5px;
+  text-align: right;
+}
