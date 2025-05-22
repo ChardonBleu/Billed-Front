@@ -26,11 +26,10 @@ export default class {
 
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute("data-bill-url");
-    const imgWidth = Math.floor($("#modaleFile").width() * 0.5);
     $("#modaleFile")
       .find(".modal-body")
       .html(
-        `<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`,
+        `<div class="object-cover text-center"><img width="100%" src=${billUrl} alt="Bill" class="object-cover w-full"/></div>`,
       );
     $("#modaleFile").modal("show");
   };
@@ -48,7 +47,7 @@ export default class {
                 status: formatStatus(doc.status),
               };
             } catch (e) {
-              console.log(e, "for", doc);
+              throw new Error(e, "for", doc);
             }
           });
           return bills;

@@ -37,7 +37,7 @@ export default class Login {
     };
     this.localStorage.setItem("user", JSON.stringify(user));
     this.login(user)
-      .catch((err) => this.createUser(user))
+      .catch(() => this.createUser(user))
       .then(() => {
         this.onNavigate(ROUTES_PATH["Bills"]);
         this.PREVIOUS_LOCATION = ROUTES_PATH["Bills"];
@@ -59,7 +59,7 @@ export default class Login {
     };
     this.localStorage.setItem("user", JSON.stringify(user));
     this.login(user)
-      .catch((err) => this.createUser(user))
+      .catch(() => this.createUser(user))
       .then(() => {
         this.onNavigate(ROUTES_PATH["Dashboard"]);
         this.PREVIOUS_LOCATION = ROUTES_PATH["Dashboard"];
@@ -100,7 +100,7 @@ export default class Login {
           }),
         })
         .then(() => {
-          console.log(`User with ${user.email} is created`);
+          console.info(`User with ${user.email} is created`);
           return this.login(user);
         });
     } else {

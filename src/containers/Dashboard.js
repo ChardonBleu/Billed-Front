@@ -74,25 +74,24 @@ export default class {
     this.document = document;
     this.onNavigate = onNavigate;
     this.store = store;
-    $("#arrow-icon1").click((e) => this.handleShowTickets(e, bills, 1));
-    $("#arrow-icon2").click((e) => this.handleShowTickets(e, bills, 2));
-    $("#arrow-icon3").click((e) => this.handleShowTickets(e, bills, 3));
+    $("#arrow-icon1").on("click", () => this.handleShowTickets(bills, 1));
+    $("#arrow-icon2").on("click", () => this.handleShowTickets(bills, 2));
+    $("#arrow-icon3").on("click", () => this.handleShowTickets(bills, 3));
     new Logout({ localStorage, onNavigate });
   }
 
   handleClickIconEye = () => {
     const billUrl = $("#icon-eye-d").attr("data-bill-url");
-    const imgWidth = Math.floor($("#modaleFileAdmin1").width() * 0.8);
     $("#modaleFileAdmin1")
       .find(".modal-body")
       .html(
-        `<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} alt="Bill"/></div>`,
+        `<div class="object-cover text-center"><img width="100%" src=${billUrl} alt="Bill" class="object-cover w-full"/></div>`,
       );
     if (typeof $("#modaleFileAdmin1").modal === "function")
       $("#modaleFileAdmin1").modal("show");
   };
 
-  handleEditTicket(e, bill, bills) {
+  handleEditTicket(bill, bills) {
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id;
     if (this.counter % 2 === 0) {
@@ -112,12 +111,12 @@ export default class {
       $(".vertical-navbar").css({ height: "120vh" });
       this.counter++;
     }
-    $("#icon-eye-d").click(this.handleClickIconEye);
-    $("#btn-accept-bill").click((e) => this.handleAcceptSubmit(e, bill));
-    $("#btn-refuse-bill").click((e) => this.handleRefuseSubmit(e, bill));
+    $("#icon-eye-d").on("click", this.handleClickIconEye);
+    $("#btn-accept-bill").on("click", () => this.handleAcceptSubmit(bill));
+    $("#btn-refuse-bill").on("click", () => this.handleRefuseSubmit(bill));
   }
 
-  handleAcceptSubmit = (e, bill) => {
+  handleAcceptSubmit = (bill) => {
     const newBill = {
       ...bill,
       status: "accepted",
@@ -127,7 +126,7 @@ export default class {
     this.onNavigate(ROUTES_PATH["Dashboard"]);
   };
 
-  handleRefuseSubmit = (e, bill) => {
+  handleRefuseSubmit = (bill) => {
     const newBill = {
       ...bill,
       status: "refused",
@@ -137,23 +136,23 @@ export default class {
     this.onNavigate(ROUTES_PATH["Dashboard"]);
   };
 
-  handleShowTickets(e, bills, index) {
+  handleShowTickets(bills, index) {
     if (this.counter === undefined || this.index !== index) this.counter = 0;
     if (this.index === undefined || this.index !== index) this.index = index;
     let currentBills = filteredBills(bills, getStatus(this.index));
     if (this.counter % 2 === 0) {
-      $(`#arrow-icon${this.index}`).css({ transform: "rotate(0deg)" });
+      $(`#arrow-icon${this.index}`).addClass("arrow-down");
       $(`#status-bills-container${this.index}`).html(cards(currentBills));
       this.counter++;
     } else {
-      $(`#arrow-icon${this.index}`).css({ transform: "rotate(90deg)" });
+      $(`#arrow-icon${this.index}`).removeClass("arrow-down");
       $(`#status-bills-container${this.index}`).html("");
       this.counter++;
     }
 
     currentBills.forEach((bill) => {
-      $(`#open-bill${bill.id}`).click((e) => {
-        this.handleEditTicket(e, bill, bills);
+      $(`#open-bill${bill.id}`).on("click", () => {
+        this.handleEditTicket(bill, bills);
       });
     });
 
@@ -188,7 +187,7 @@ export default class {
         .bills()
         .update({ data: JSON.stringify(bill), selector: bill.id })
         .then((bill) => bill)
-        .catch(console.log);
+        .catch();
     }
   };
 }

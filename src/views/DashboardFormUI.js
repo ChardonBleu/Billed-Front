@@ -38,7 +38,7 @@ export default (bill) => {
         </div>
         <div class="col-sm" id="dashboard-form-col2">
           <label for="commentary" class="bold-label">Commentaire</label>
-          <div class='textarea-field' style="height: 300px;"> ${bill.commentary} </div>
+          <div class='textarea-field'> ${bill.commentary} </div>
         </div>
       </div>
       <div class="row">
@@ -95,7 +95,7 @@ export default (bill) => {
       ${
         bill.status === "pending"
           ? `
-      <div class="col-sm buttons-flex" style="width: 300px;" >
+      <div class="col-sm buttons-flex" >
         <button type="submit" id='btn-refuse-bill' data-testid='btn-refuse-bill-d' class="btn btn-primary">Refuser</button>
         <button type="submit" id='btn-accept-bill' data-testid='btn-accept-bill-d' class="btn btn-primary">Accepter</button>
       </div>

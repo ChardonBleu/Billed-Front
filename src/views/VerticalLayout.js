@@ -2,7 +2,7 @@ import WindowIcon from "../assets/svg/window.js";
 import MailIcon from "../assets/svg/mail.js";
 import DisconnectIcon from "../assets/svg/disconnect.js";
 
-export default (height) => {
+export default () => {
   let user;
   user = JSON.parse(localStorage.getItem("user"));
   if (typeof user === "string") {
@@ -10,7 +10,7 @@ export default (height) => {
   }
   if (user && user.type === "Employee") {
     return `
-        <div class='vertical-navbar' style='height: ${height}vh;'>
+        <div class='vertical-navbar'>
           <div class='layout-title'> Billed </div>
           <div id='layout-icon1' data-testid="icon-window">
             ${WindowIcon}
@@ -25,7 +25,7 @@ export default (height) => {
         `;
   } else {
     return `
-        <div class='vertical-navbar' style='height: ${height}vh;'>
+        <div class='vertical-navbar'>
           <div class='layout-title'> Billed </div>
             <div id='layout-disconnect' data-testid='layout-disconnect'>
               ${DisconnectIcon}

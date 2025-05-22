@@ -8,13 +8,7 @@ export default defineConfig([
     files: ["**/*.{js,mjs,cjs,jsx}"],
     plugins: { js },
     extends: ["js/recommended"],
-    ignores: [
-      "src/__tests__/*",
-      "src/__mocks__/*",
-      "coverage/*",
-      "setup-jest.js",
-      "block-navigation.js",
-    ],
+    ignores: ["src/__tests__/*", "src/__mocks__/*"],
     rules: {
       "no-undef": "warn",
       "no-unused-vars": "warn",

@@ -32,6 +32,7 @@
   padding: 20px;
   border-radius: 5px;
   overflow-y: auto;
+  height: 300px;
 }
 
 #vat-flex-container {
@@ -63,6 +64,7 @@
   justify-content: space-between;
   margin-top: 24px;
   max-width: 300px !important;
+  width: 300px;
 }
 
 .buttons-flex button {
