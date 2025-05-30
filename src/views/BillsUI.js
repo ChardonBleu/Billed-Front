@@ -12,7 +12,7 @@ const row = (bill) => {
       <td>${bill.name}</td>
       <td data-testid="billsUIDate">${formatDate(bill.date)}</td>
       <td>${bill.amount} €</td>
-      <td>${bill.status}</td>
+      <td data-testid="billsStatus">${bill.status}</td>
       <td>
         ${Actions(bill.fileUrl)}
       </td>
