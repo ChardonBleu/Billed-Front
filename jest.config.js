@@ -1,6 +1,6 @@
 /** @type {import('jest').Config} */
 const config = {
-  setupFilesAfterEnv: ['./setup-jest.js'],
+  setupFilesAfterEnv: ["./setup-jest.js"],
 };
 
 export default config;

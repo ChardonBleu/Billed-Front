@@ -353,7 +353,7 @@ describe("Given I am a user connected as Admin", () => {
         window.onNavigate(ROUTES_PATH.Dashboard);
         await new Promise(process.nextTick);
         const message = screen.getByText(/Erreur 404/);
-        console.log("****************** " + message.innerHTML)
+        console.log("****************** " + message.innerHTML);
         expect(message).toBeTruthy();
       });
 
@@ -369,7 +369,7 @@ describe("Given I am a user connected as Admin", () => {
         window.onNavigate(ROUTES_PATH.Dashboard);
         await new Promise(process.nextTick);
         const message = screen.getByText(/Erreur 500/);
-        console.log("****************** " + message.innerHTML)
+        console.log("****************** " + message.innerHTML);
         expect(message).toBeTruthy();
       });
     });

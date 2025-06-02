@@ -1,4 +1,4 @@
 import $ from "jquery";
 global.$ = global.jQuery = $;
 
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
