@@ -72,14 +72,14 @@ describe("Given I am connected as an Admin", () => {
       });
       document.body.innerHTML = DashboardUI({ data: { bills } });
 
-      const handleShowTickets1 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 1),
+      const handleShowTickets1 = jest.fn(() =>
+        dashboard.handleShowTickets(bills, 1),
       );
-      const handleShowTickets2 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 2),
+      const handleShowTickets2 = jest.fn(() =>
+        dashboard.handleShowTickets(bills, 2),
       );
-      const handleShowTickets3 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 3),
+      const handleShowTickets3 = jest.fn(() =>
+        dashboard.handleShowTickets(bills, 3),
       );
 
       const icon1 = screen.getByTestId("arrow-icon1");
@@ -129,8 +129,8 @@ describe("Given I am connected as an Admin", () => {
         localStorage: window.localStorage,
       });
       document.body.innerHTML = DashboardUI({ data: { bills } });
-      const handleShowTickets1 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 1),
+      const handleShowTickets1 = jest.fn(() =>
+        dashboard.handleShowTickets(bills, 1),
       );
       const icon1 = screen.getByTestId("arrow-icon1");
       icon1.addEventListener("click", handleShowTickets1);
@@ -168,8 +168,8 @@ describe("Given I am connected as an Admin", () => {
       });
       document.body.innerHTML = DashboardUI({ data: { bills } });
 
-      const handleShowTickets1 = jest.fn((e) =>
-        dashboard.handleShowTickets(e, bills, 1),
+      const handleShowTickets1 = jest.fn(() =>
+        dashboard.handleShowTickets(bills, 1),
       );
       const icon1 = screen.getByTestId("arrow-icon1");
       icon1.addEventListener("click", handleShowTickets1);
@@ -220,8 +220,8 @@ describe("Given I am connected as Admin, and I am on Dashboard page, and I click
       });
 
       const acceptButton = screen.getByTestId("btn-accept-bill-d");
-      const handleAcceptSubmit = jest.fn((e) =>
-        dashboard.handleAcceptSubmit(e, bills[0]),
+      const handleAcceptSubmit = jest.fn(() =>
+        dashboard.handleAcceptSubmit(bills[0]),
       );
       acceptButton.addEventListener("click", handleAcceptSubmit);
       fireEvent.click(acceptButton);
@@ -255,8 +255,8 @@ describe("Given I am connected as Admin, and I am on Dashboard page, and I click
         localStorage: window.localStorage,
       });
       const refuseButton = screen.getByTestId("btn-refuse-bill-d");
-      const handleRefuseSubmit = jest.fn((e) =>
-        dashboard.handleRefuseSubmit(e, bills[0]),
+      const handleRefuseSubmit = jest.fn(() =>
+        dashboard.handleRefuseSubmit(bills[0]),
       );
       refuseButton.addEventListener("click", handleRefuseSubmit);
       fireEvent.click(refuseButton);
@@ -352,7 +352,8 @@ describe("Given I am a user connected as Admin", () => {
         });
         window.onNavigate(ROUTES_PATH.Dashboard);
         await new Promise(process.nextTick);
-        const message = await screen.getByText(/Erreur 404/);
+        const message = screen.getByText(/Erreur 404/);
+        console.log("****************** " + message.innerHTML);
         expect(message).toBeTruthy();
       });
 
@@ -367,7 +368,8 @@ describe("Given I am a user connected as Admin", () => {
 
         window.onNavigate(ROUTES_PATH.Dashboard);
         await new Promise(process.nextTick);
-        const message = await screen.getByText(/Erreur 500/);
+        const message = screen.getByText(/Erreur 500/);
+        console.log("****************** " + message.innerHTML);
         expect(message).toBeTruthy();
       });
     });
