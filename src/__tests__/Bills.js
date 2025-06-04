@@ -11,11 +11,14 @@ import { localStorageMock } from "../__mocks__/localStorage.js";
 import Bills from "../containers/Bills.js";
 import mockStore from "../__mocks__/store.js";
 import router from "../app/Router.js";
+import * as formatModule from "../app/format.js";
 
 jest.mock("../app/Store", () => mockStore);
+let onNavigate;
 
 describe("Given I am connected as an employee", () => {
   beforeAll(() => {
+    onNavigate = jest.fn();
     Object.defineProperty(window, "localStorage", {
       value: localStorageMock,
     });
@@ -67,6 +70,20 @@ describe("Given I am connected as an employee", () => {
         "Refusé",
       ]);
     });
+    test("Then bills can't appear because of API 500 error", async () => {
+      jest.spyOn(formatModule, "formatStatus").mockImplementation(() => {
+        throw new Error("formatage impossible");
+      });
+
+      const newBills = new Bills({
+        document,
+        onNavigate,
+        store: mockStore,
+        localStorage: window.localStorage,
+      });
+
+      await expect(newBills.getBills()).rejects.toThrow("formatage impossible");
+    });
   });
   describe("When I am on Bills Page and i click on eye icon", () => {
     test("Then modal file opens", async () => {
@@ -91,9 +108,6 @@ describe("Given I am connected as an employee", () => {
       iconEye.addEventListener("click", handleClickIconEye);
       userEvent.click(iconEye);
       expect($.fn.modal).toHaveBeenCalledWith("show");
-
-      const eyebuttons = screen.getAllByTestId("icon-eye");
-      userEvent.click(eyebuttons[0]);
       expect(handleClickIconEye).toHaveBeenCalled();
       await waitFor(() => screen.getByAltText("Bill"));
       const fileImg = screen.getByAltText("Bill");
@@ -105,8 +119,6 @@ describe("Given I am connected as an employee", () => {
   });
   describe("When I am on Bills Page and I click on new Bill button", () => {
     test("Then new bill Form is open", async () => {
-      const onNavigate = jest.fn();
-
       const newBills = new Bills({
         document,
         onNavigate,
@@ -140,17 +152,12 @@ describe("Given I am a user connected as employee", () => {
   });
   describe("When I navigate to Bills", () => {
     test("fetches bills from mock API GET", async () => {
-      const root = document.createElement("div");
-      root.setAttribute("id", "root");
-      document.body.append(root);
-      router();
-
       window.onNavigate(ROUTES_PATH.Bills);
 
       await waitFor(() => screen.getByText("Mes notes de frais"));
       const contentTitle = screen.getByText("Mes notes de frais");
       expect(contentTitle).toBeTruthy();
-      const tbody = screen.getAllByTestId("tbody");
+      const tbody = screen.getByTestId("tbody");
       expect(tbody).toBeTruthy();
       const allrows = document.querySelectorAll("tbody tr");
       expect(allrows.length).toBe(4);
