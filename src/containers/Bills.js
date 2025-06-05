@@ -32,6 +32,8 @@ export default class {
         `<div class="object-cover text-center"><img width="100%" src=${billUrl} alt="Bill" class="object-cover w-full"/></div>`,
       );
     $("#modaleFile").modal("show");
+    const closeBtn = document.querySelector(".close");
+    closeBtn.addEventListener("click", () => $("#modaleFile").modal("hide"));
   };
 
   getBills = () => {

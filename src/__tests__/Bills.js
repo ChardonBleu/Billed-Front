@@ -117,6 +117,37 @@ describe("Given I am connected as an employee", () => {
       );
     });
   });
+  describe("When I am on Bills Page and modal file open and I click on close icon", () => {
+    test("Then modal file closes", async () => {
+      $.fn.modal = jest.fn();
+
+      const newBills = new Bills({
+        document,
+        onNavigate,
+        store: mockStore,
+        localStorage: window.localStorage,
+      });
+
+      document.body.innerHTML = BillsUI({ data: bills });
+
+      await waitFor(() => screen.getByTestId("tbody"));
+
+      const iconEye = screen.getAllByTestId("icon-eye")[0];
+      const handleClickIconEye = jest.fn(() =>
+        newBills.handleClickIconEye(iconEye),
+      );
+
+      iconEye.addEventListener("click", handleClickIconEye);
+      userEvent.click(iconEye);
+      expect($.fn.modal).toHaveBeenCalledWith("show");
+      expect(handleClickIconEye).toHaveBeenCalled();
+      await waitFor(() => screen.getByAltText("Bill"));
+      const closeIcon = document.querySelector(".close");
+      closeIcon.addEventListener("click", handleClickIconEye);
+      userEvent.click(closeIcon);
+      expect($.fn.modal).toHaveBeenCalledWith("hide");
+    });
+  });
   describe("When I am on Bills Page and I click on new Bill button", () => {
     test("Then new bill Form is open", async () => {
       const newBills = new Bills({
