@@ -16,6 +16,7 @@ let handleChangeFile;
 
 describe("Given I am connected as an employee", () => {
   beforeAll(() => {
+    jest.spyOn(mockStore, "bills");
     onNavigate = jest.fn();
     Object.defineProperty(window, "localStorage", {
       value: localStorageMock,
@@ -209,7 +210,6 @@ describe("Given I am connected as an employee", () => {
       screen.getByTestId("pct").value = "20";
       const form = screen.getByTestId("form-new-bill");
 
-      jest.spyOn(mockStore, "bills");
       mockStore.bills.mockImplementationOnce(() => {
         return {
           update: () => {
@@ -230,6 +230,51 @@ describe("Given I am connected as an employee", () => {
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.objectContaining({ message: "Erreur 500" }),
       );
+    });
+  });
+  describe("When I am on NewBill Page and I store a new file in file input", () => {
+    test("Then bills creation with file throw an error", async () => {
+      mockStore.bills.mockImplementationOnce(() => {
+        return {
+          create: () => {
+            return Promise.reject(new Error("Erreur 500"));
+          },
+        };
+      });
+
+      const consoleSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+
+      const mockFilePng = new File(["file content"], "image.png", {
+        type: "image/png",
+      });
+      const event = {
+        target: {
+          files: [mockFilePng],
+          value: mockFilePng.name,
+        },
+        preventDefault: jest.fn(),
+      };
+      await waitFor(() => screen.getByTestId("form-new-bill"));
+      const fileInput = screen.getByTestId("file");
+      Object.defineProperty(fileInput, "files", {
+        value: [mockFilePng],
+        writable: false,
+      });
+      handleChangeFile = jest.fn(() => newBillForm.handleChangeFile(event));
+
+      fileInput.addEventListener("change", handleChangeFile);
+      fileInput.dispatchEvent(new Event("change"));
+
+      await waitFor(() => {
+        expect(consoleSpy).toHaveBeenCalledTimes(1);
+      });
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ message: "Erreur 500" }),
+      );
+
+      jest.clearAllMocks();
     });
   });
 });
