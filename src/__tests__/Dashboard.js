@@ -302,6 +302,42 @@ describe("Given I am connected as Admin and I am on Dashboard page and I clicked
       expect(modale).toBeTruthy();
     });
   });
+  describe("When I click on the modal close button", () => {
+    test("The modal should close", async () => {
+      $.fn.modal = jest.fn();
+      Object.defineProperty(window, "localStorage", {
+        value: localStorageMock,
+      });
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify({
+          type: "Admin",
+        }),
+      );
+      document.body.innerHTML = DashboardFormUI(bills[0]);
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+      const store = null;
+      const dashboard = new Dashboard({
+        document,
+        onNavigate,
+        store,
+        bills,
+        localStorage: window.localStorage,
+      });
+
+      const handleClickIconEye = jest.fn(dashboard.handleClickIconEye);
+      const eye = screen.getByTestId("icon-eye-d");
+      eye.addEventListener("click", handleClickIconEye);
+      userEvent.click(eye);
+      await waitFor(() => screen.getByTestId("modaleFileAdmin"));
+      const closeIcon = document.querySelector(".close");
+      closeIcon.addEventListener("click", handleClickIconEye);
+      userEvent.click(closeIcon);
+      expect($.fn.modal).toHaveBeenCalledWith("hide");
+    });
+  });
 });
 
 // test d'intégration GET
