@@ -41,7 +41,6 @@ export default class NewBill {
           },
         })
         .then(({ fileUrl, key }) => {
-          console.log("*********** dans then ******* ", fileUrl);
           this.billId = key;
           this.fileUrl = fileUrl;
           this.fileName = fileName;

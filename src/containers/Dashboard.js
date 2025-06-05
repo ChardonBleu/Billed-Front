@@ -89,6 +89,10 @@ export default class {
       );
     if (typeof $("#modaleFileAdmin1").modal === "function")
       $("#modaleFileAdmin1").modal("show");
+    const closeBtn = document.querySelector(".close");
+    closeBtn.addEventListener("click", () =>
+      $("#modaleFileAdmin1").modal("hide"),
+    );
   };
 
   handleEditTicket(bill, bills) {
